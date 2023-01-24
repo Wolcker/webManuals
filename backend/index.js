@@ -4,6 +4,7 @@
 
 const express = require("express");
 const crypto = require("crypto");
+const cors = require("cors");
 const Joi = require("joi");
 const app = express();
 
@@ -35,7 +36,7 @@ let urls = [
 ];
 
 app.use(express.json());
-
+app.use(cors());
 app.get("/api/url", (req, res) => {
   return res.send(urls);
 });
