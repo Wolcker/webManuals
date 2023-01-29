@@ -54,7 +54,10 @@ class App extends Component {
   render() {
     return (
       <form className="center">
-        <label>URL shortner</label>
+        <img src="./logo.png" alt="logo" className="center" />
+        <label>
+          <h1>URL shortner</h1>
+        </label>
         <br />
         {inputGenerator("url", this.state.url, "www.wolcker.com", this.handleChange)}
         {inputGenerator("maxTime", this.state.maxTime, "Max time (optional)", this.handleChange)}

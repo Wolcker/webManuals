@@ -5,29 +5,35 @@ const Joi = require("joi");
 const app = express();
 const port = 5000;
 
+// Really cool URL for testing
 let URLS = [
   {
     id: "d424b1b7bcc45860ec47f09c219861da",
     value: "https://www.google.com",
     redirectURL: "google",
+    infinitSearch: true,
     maxTime: addMinutes(new Date(), 0),
   },
   {
     id: "d424b1b7bcc45860ec47f09c219861dc",
     value: "https://www.facebook.com",
     redirectURL: "fb",
+    infinitSearch: false,
     maxTime: addMinutes(new Date(), 1),
   },
   {
     id: "d424b1b7bcc45860ec47f09c219861dj",
     value: "https://www.netflix.com",
     redirectURL: "netflix",
+    infinitSearch: false,
     maxTime: addMinutes(new Date(), 3),
   },
 ];
 
 app.use(express.json());
 app.use(cors());
+
+//GET to get all the URLs
 app.get("/api/url", (req, res) => {
   return res.send(URLS);
 });
@@ -69,7 +75,7 @@ app.post("/api/url", (req, res) => {
       id: getNewId(),
       value: website,
       redirectURL: createShortner(),
-      infinitSearch: false,
+      infinitSearch: getInfiniteSeach(maxTime),
       maxTime: addMinutes(new Date(), maxTime),
     };
 
@@ -111,6 +117,11 @@ function getWebsite(value) {
 
 function createShortner() {
   return Math.random().toString(36).substring(2, 7);
+}
+
+function getInfiniteSeach(maxTime) {
+  if (!maxTime) return true;
+  return false;
 }
 
 function addMinutes(date, minutes) {
