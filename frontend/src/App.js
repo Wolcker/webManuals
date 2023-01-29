@@ -21,24 +21,26 @@ class App extends Component {
   handleGenerate = async (event) => {
     event.preventDefault();
     try {
-      const { url, maxTime } = this.state;
+      let { url, maxTime } = this.state;
 
       if (!checkValidMaxTime(maxTime)) {
         this.setState({ maxTime: 0 });
       }
 
-      if (!checkValidUrl(url)) {
+      if (checkValidUrl(url)) {
+        if (!maxTime) {
+          maxTime = 0;
+        }
+        const response = await axios.post(URL, {
+          url: url,
+          maxTime: maxTime,
+        });
+        const { value, redirectURL } = response.data;
+        this.setState({
+          url: value,
+          redirectURL: redirectURL,
+        });
       }
-
-      const response = await axios.post(URL, {
-        url: url,
-        maxTime: maxTime,
-      });
-      const { value, redirectURL } = response.data;
-      this.setState({
-        url: value,
-        redirectURL: redirectURL,
-      });
     } catch (error) {
       console.log(error);
     }
